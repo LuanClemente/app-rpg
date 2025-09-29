@@ -1,3 +1,77 @@
+.rpg-bg {
+  min-height: 100vh;
+  background: url('https://www.transparenttextures.com/patterns/wood-pattern.png'), #2d1a06;
+  background-size: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rpg-login-container {
+  background: rgba(40, 24, 8, 0.97);
+  border: 4px solid #bfa76a;
+  border-radius: 18px;
+  box-shadow: 0 0 24px #000a, 0 0 0 8px #6b4f1d inset;
+  padding: 2.5rem 2.5rem 2rem 2.5rem;
+  max-width: 350px;
+  width: 100%;
+  text-align: center;
+  font-family: 'UnifrakturCook', 'Cinzel Decorative', 'IM Fell English SC', serif;
+}
+
+.rpg-login-title {
+  font-size: 2.2rem;
+  color: #e2c275;
+  margin-bottom: 1.2rem;
+  letter-spacing: 2px;
+  text-shadow: 2px 2px 0 #6b4f1d, 0 0 8px #000a;
+}
+
+.rpg-login-form label {
+  color: #e2c275;
+  font-size: 1.1rem;
+  margin-bottom: 0.2rem;
+  display: block;
+  text-align: left;
+}
+
+.rpg-login-form input {
+  width: 100%;
+  padding: 0.5rem;
+  margin-bottom: 1rem;
+  border: 2px solid #bfa76a;
+  border-radius: 6px;
+  background: #3a2410;
+  color: #fffbe7;
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.rpg-login-form button {
+  background: linear-gradient(90deg, #bfa76a 60%, #e2c275 100%);
+  color: #2d1a06;
+  border: none;
+  border-radius: 6px;
+  padding: 0.6rem 1.5rem;
+  font-size: 1.1rem;
+  font-family: inherit;
+  font-weight: bold;
+  cursor: pointer;
+  box-shadow: 0 2px 8px #0005;
+  transition: background 0.2s;
+}
+.rpg-login-form button:hover {
+  background: linear-gradient(90deg, #e2c275 60%, #bfa76a 100%);
+}
+
+.rpg-login-error {
+  color: #ff5555;
+  margin-top: 0.5rem;
+  font-weight: bold;
+  text-shadow: 1px 1px 0 #000a;
+}
+
+@import url('https://fonts.googleapis.com/css2?family=UnifrakturCook:wght@700&family=Cinzel+Decorative:wght@700&family=IM+Fell+English+SC&display=swap');
 .App {
   text-align: center;
 }

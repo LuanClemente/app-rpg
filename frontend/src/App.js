@@ -27,7 +27,7 @@ function App() {
     return showRegister ? (
       <Register onRegister={handleRegister} onBack={() => setShowRegister(false)} />
     ) : (
-      <Login onLogin={handleLogin} />
+      <Login onLogin={handleLogin} onRegister={() => setShowRegister(true)} />
     );
   }
 

@@ -24,5 +24,22 @@ public class AuthController { // Classe controladora para autenticação
         }
         return "Credenciais inválidas"; // Retorna mensagem de erro
     }
+
+    // Endpoint para cadastro de usuário
+    @PostMapping("/register") // Mapeia requisições POST para /register
+    public String register(@RequestBody User registerRequest) { // Recebe dados de cadastro
+        // Verifica se já existe usuário com o mesmo nome
+        if (userRepository.findByUsername(registerRequest.getUsername()) != null) {
+            return "Usuário já existe";
+        }
+        // Simples hash de senha (exemplo, use BCrypt em produção)
+        String hashedPassword = Integer.toHexString(registerRequest.getPassword().hashCode());
+        registerRequest.setPassword(hashedPassword);
+        if (registerRequest.getRole() == null || registerRequest.getRole().isEmpty()) {
+            registerRequest.setRole("PLAYER"); // Papel padrão
+        }
+        userRepository.save(registerRequest); // Salva usuário
+        return "Usuário cadastrado com sucesso";
+    }
 }
 // Fim da classe AuthController
