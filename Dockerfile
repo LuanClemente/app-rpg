@@ -1,19 +1,16 @@
-# Dockerfile para backend Java Spring Boot
-# Usa imagem oficial do OpenJDK
-FROM openjdk:17-jdk-slim
 
-# Define diretório de trabalho
+# Dockerfile multi-stage para backend Java Spring Boot
+
+# Etapa 1: build com Maven
+FROM maven:3.9.6-eclipse-temurin-17 AS build
 WORKDIR /app
-
-# Copia o arquivo pom.xml e o diretório de dependências
 COPY pom.xml .
 COPY src ./src
+RUN mvn clean package -DskipTests
 
-# Faz o build do projeto
-RUN ./mvnw package -DskipTests || mvn package -DskipTests
-
-# Expõe a porta padrão do Spring Boot
+# Etapa 2: imagem final apenas com Java
+FROM eclipse-temurin:17-jre
+WORKDIR /app
+COPY --from=build /app/target/backend-0.0.1-SNAPSHOT.jar app.jar
 EXPOSE 8080
-
-# Executa o jar gerado
-CMD ["java", "-jar", "target/backend-0.0.1-SNAPSHOT.jar"]
+CMD ["java", "-jar", "app.jar"]
