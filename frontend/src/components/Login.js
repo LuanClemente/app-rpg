@@ -31,21 +31,35 @@ function Login({ onLogin }) {
   };
 
   // Renderiza o formulário de login
+  // Permite acessar cadastro se prop onRegister existir
   return (
-    <div>
-      <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label>Usuário:</label>
-          <input type="text" value={username} onChange={e => setUsername(e.target.value)} required />
+    <div className="rpg-bg">
+      <div className="rpg-login-container">
+        <div style={{marginBottom: '1.5rem'}}>
+          {/* Ícone temático D&D (d20) */}
+          <svg width="48" height="48" viewBox="0 0 48 48" fill="none" style={{marginBottom: '0.5rem'}} xmlns="http://www.w3.org/2000/svg">
+            <polygon points="24,4 44,14 44,34 24,44 4,34 4,14" fill="#bfa76a" stroke="#6b4f1d" strokeWidth="2"/>
+            <text x="24" y="30" textAnchor="middle" fontSize="18" fontFamily="Cinzel Decorative, serif" fill="#2d1a06">d20</text>
+          </svg>
         </div>
-        <div>
-          <label>Senha:</label>
-          <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
-        </div>
-        <button type="submit">Entrar</button>
-      </form>
-      {error && <p style={{ color: 'red' }}>{error}</p>}
+        <h2 className="rpg-login-title">Login RPG</h2>
+        <form className="rpg-login-form" onSubmit={handleSubmit}>
+          <div>
+            <label>Usuário:</label>
+            <input type="text" value={username} onChange={e => setUsername(e.target.value)} required />
+          </div>
+          <div>
+            <label>Senha:</label>
+            <input type="password" value={password} onChange={e => setPassword(e.target.value)} required />
+          </div>
+          <button type="submit">Entrar</button>
+        </form>
+        {error && <p className="rpg-login-error">{error}</p>}
+        {/* Botão para acessar cadastro, se prop onRegister existir */}
+        {typeof onRegister === 'function' && (
+          <button style={{marginTop: '1rem'}} onClick={onRegister}>Cadastrar novo usuário</button>
+        )}
+      </div>
     </div>
   );
 }

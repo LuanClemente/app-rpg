@@ -3,11 +3,13 @@
 // Gerencia autenticação e exibe tela de login ou ficha de personagem
 import React, { useState } from 'react'; // Importa React e useState
 import Login from './components/Login'; // Importa componente de Login
+import Register from './components/Register'; // Importa componente de Cadastro
 import CharacterSheet from './components/CharacterSheet'; // Importa componente de ficha
 
 function App() {
   const [token, setToken] = useState(''); // Estado para armazenar o token JWT
   const [username, setUsername] = useState(''); // Estado para nome de usuário
+  const [showRegister, setShowRegister] = useState(false); // Estado para alternar entre login e cadastro
 
   // Função chamada após login bem-sucedido
   const handleLogin = (jwt, user) => {
@@ -15,9 +17,18 @@ function App() {
     setUsername(user); // Salva o nome de usuário
   };
 
-  // Se não estiver logado, exibe tela de login
+  // Função chamada após cadastro bem-sucedido
+  const handleRegister = () => {
+    setShowRegister(false); // Volta para tela de login
+  };
+
+  // Se não estiver logado, exibe tela de login ou cadastro
   if (!token) {
-    return <Login onLogin={handleLogin} />;
+    return showRegister ? (
+      <Register onRegister={handleRegister} onBack={() => setShowRegister(false)} />
+    ) : (
+      <Login onLogin={handleLogin} />
+    );
   }
 
   // Se estiver logado, exibe ficha de personagem
