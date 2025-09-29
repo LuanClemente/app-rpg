@@ -1,6 +1,7 @@
 package com.apprpg.model; // Define o pacote do arquivo
 
 import jakarta.persistence.*; // Importa as anotações de persistência do Jakarta
+import com.apprpg.model.User; // Importa o modelo User
 
 
 @Entity // Indica que esta classe é uma entidade JPA
@@ -20,6 +21,14 @@ public class CharacterSheet { // Classe que representa a ficha de personagem
     private int wisdom; // Sabedoria
     private int charisma; // Carisma
     // Adicione outros campos conforme necessário
+
+    @ManyToOne // Indica relação muitos-para-um (muitas fichas para um usuário)
+    @JoinColumn(name = "user_id") // Define a coluna de chave estrangeira
+    private User user; // Usuário dono da ficha
+
+    // Getter e setter para o usuário
+    public User getUser() { return user; } // Retorna o usuário dono da ficha
+    public void setUser(User user) { this.user = user; } // Define o usuário dono da ficha
 
     // Métodos getters e setters para acessar e modificar os campos
     public Long getId() { return id; } // Retorna o ID
