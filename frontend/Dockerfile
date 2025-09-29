@@ -9,9 +9,14 @@ RUN npm run build
 
 FROM nginx:stable-alpine
 COPY --from=build /app/build /usr/share/nginx/html
-# Remove default nginx config and use a basic one that serves the SPA
-RUN rm /etc/nginx/conf.d/default.conf
-COPY nginx.conf /etc/nginx/conf.d/default.conf
+# Prepare nginx config template and entrypoint to substitute env vars at runtime
+RUN rm /etc/nginx/conf.d/default.conf || true
+COPY nginx.conf /etc/nginx/conf.d/default.conf.template
+COPY docker-entrypoint.sh /docker-entrypoint.sh
+RUN chmod +x /docker-entrypoint.sh
+
+# Install envsubst (gettext) to allow env var substitution
+RUN apk add --no-cache gettext
 
 EXPOSE 80
-CMD ["/usr/sbin/nginx","-g","daemon off;"]
+ENTRYPOINT ["/docker-entrypoint.sh"]
