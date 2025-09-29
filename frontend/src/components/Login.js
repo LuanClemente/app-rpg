@@ -2,7 +2,7 @@
 // Exibe formulário de login e chama a função onLogin ao autenticar com sucesso
 import React, { useState } from 'react';
 
-function Login({ onLogin }) {
+function Login({ onLogin, onRegister }) {
   // Estados para armazenar usuário e senha digitados
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
