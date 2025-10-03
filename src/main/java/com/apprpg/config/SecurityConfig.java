@@ -31,6 +31,7 @@ public class SecurityConfig { // Classe de configuração de segurança
                     "/*.js",
                     "/*.json",
                     "/*.ico",
+                    "/*.png",
                     "/manifest.json",
                     "/api/auth/**", "/ws/**", "/swagger-ui/**", "/v3/api-docs/**"
                 ).permitAll()

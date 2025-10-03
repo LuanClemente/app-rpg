@@ -14,7 +14,7 @@ function Login({ onLogin, onRegister }) {
     setError(''); // Limpa erro anterior
     try {
       // Faz requisição para o endpoint de login do backend
-      const response = await fetch(`${process.env.REACT_APP_API_URL || process.env.API_URL || '/api'}/auth/login`, {
+      const response = await fetch('/api/auth/login', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
