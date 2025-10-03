@@ -38,13 +38,15 @@ public class CharacterSheetController { // Classe controladora para operações 
     public ResponseEntity<CharacterSheet> getById(@PathVariable Long id, Authentication authentication) { // Retorna ficha pelo ID conforme permissão
         User user = userRepository.findByUsername(authentication.getName()); // Obtém usuário logado
         Optional<CharacterSheet> sheetOpt = repository.findById(id); // Busca a ficha pelo ID
-
-        return sheetOpt.map(sheet -> {
-            if (user.getRole().equals("MASTER") || (sheet.getUser() != null && sheet.getUser().getId().equals(user.getId()))) {
-                return ResponseEntity.ok(sheet); // 200 OK com a ficha
-            }
-            return ResponseEntity.<CharacterSheet>status(403).build(); // 403 Forbidden (sem permissão)
-        }).orElse(ResponseEntity.<CharacterSheet>notFound().build()); // 404 Not Found (não encontrada)
+        
+        if (sheetOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        CharacterSheet sheet = sheetOpt.get();
+        if (user.getRole().equals("MASTER") || (sheet.getUser() != null && sheet.getUser().getId().equals(user.getId()))) {
+            return ResponseEntity.ok(sheet);
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     @PostMapping // Mapeia as requisições POST
@@ -59,16 +61,17 @@ public class CharacterSheetController { // Classe controladora para operações 
     public ResponseEntity<CharacterSheet> update(@PathVariable Long id, @RequestBody CharacterSheet sheetDetails, Authentication authentication) { // Atualiza ficha conforme permissão
         User user = userRepository.findByUsername(authentication.getName()); // Obtém usuário logado
         Optional<CharacterSheet> existingSheetOpt = repository.findById(id); // Busca ficha existente
-
-        return existingSheetOpt.map(existing -> {
-            if (user.getRole().equals("MASTER") || (existing.getUser() != null && existing.getUser().getId().equals(user.getId()))) {
-                sheetDetails.setId(id); // Garante que o ID é o da URL
-                sheetDetails.setUser(existing.getUser()); // Mantém o usuário dono original
-                CharacterSheet updatedSheet = repository.save(sheetDetails);
-                return ResponseEntity.ok(updatedSheet); // 200 OK com a ficha atualizada
-            }
-            return ResponseEntity.<CharacterSheet>status(403).build(); // 403 Forbidden
-        }).orElse(ResponseEntity.<CharacterSheet>notFound().build()); // 404 Not Found
+        
+        if (existingSheetOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        CharacterSheet existingSheet = existingSheetOpt.get();
+        if (user.getRole().equals("MASTER") || (existingSheet.getUser() != null && existingSheet.getUser().getId().equals(user.getId()))) {
+            sheetDetails.setId(id);
+            sheetDetails.setUser(existingSheet.getUser());
+            return ResponseEntity.ok(repository.save(sheetDetails));
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 
     @DeleteMapping("/{id}") // Mapeia as requisições DELETE com um ID específico
@@ -76,13 +79,15 @@ public class CharacterSheetController { // Classe controladora para operações 
         User user = userRepository.findByUsername(authentication.getName()); // Obtém usuário logado
         Optional<CharacterSheet> sheetOpt = repository.findById(id); // Busca ficha existente
 
-        return sheetOpt.map(sheet -> {
-            if (user.getRole().equals("MASTER") || (sheet.getUser() != null && sheet.getUser().getId().equals(user.getId()))) {
-                repository.deleteById(id); // Deleta a ficha do banco de dados
-                return ResponseEntity.noContent().build(); // 204 No Content (sucesso, sem corpo)
-            }
-            return ResponseEntity.<Void>status(403).build(); // 403 Forbidden
-        }).orElse(ResponseEntity.<Void>notFound().build()); // 404 Not Found
+        if (sheetOpt.isEmpty()) {
+            return ResponseEntity.notFound().build();
+        }
+        CharacterSheet sheet = sheetOpt.get();
+        if (user.getRole().equals("MASTER") || (sheet.getUser() != null && sheet.getUser().getId().equals(user.getId()))) {
+            repository.deleteById(id);
+            return ResponseEntity.noContent().build();
+        }
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
     }
 }
 // Fim da classe CharacterSheetController
