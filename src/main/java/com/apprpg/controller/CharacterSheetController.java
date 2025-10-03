@@ -25,9 +25,7 @@ public class CharacterSheetController { // Classe controladora para operações 
         if (user.getRole().equals("MASTER")) { // Se for mestre, retorna todas as fichas
             return repository.findAll(); // Busca todas as fichas no banco de dados
         } else { // Se for jogador, retorna apenas suas fichas
-            return repository.findAll().stream()
-                    .filter(sheet -> sheet.getUser() != null && sheet.getUser().getId().equals(user.getId()))
-                    .toList(); // Filtra fichas do usuário
+            return repository.findByUserId(user.getId()); // Busca apenas as fichas do usuário no banco
         }
     }
 
