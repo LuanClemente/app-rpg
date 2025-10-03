@@ -25,6 +25,11 @@ public class AuthController { // Classe controladora para autenticação
   // Endpoint para login
   @PostMapping("/login") // Mapeia requisições POST para /login
   public ResponseEntity<?> login(@Valid @RequestBody User loginRequest) { // Recebe dados de login
+    // Verificação de segurança para evitar exceções com senhas nulas/vazias
+    if (loginRequest.getUsername() == null || loginRequest.getPassword() == null || loginRequest.getPassword().isBlank()) {
+        return ResponseEntity.badRequest().body("Usuário e senha não podem ser vazios.");
+    }
+
     User user = userRepository.findByUsername(loginRequest.getUsername()); // Busca usuário pelo nome
     if (user != null && passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
       String token = jwtUtil.generateToken(user.getUsername());
@@ -39,6 +44,10 @@ public class AuthController { // Classe controladora para autenticação
     // Verifica se já existe usuário com o mesmo nome
     if (userRepository.findByUsername(registerRequest.getUsername()) != null) {
       return ResponseEntity.badRequest().body("Usuário já existe");
+    }
+    // Verificação de segurança para garantir que a senha não seja nula/vazia antes de criptografar
+    if (registerRequest.getPassword() == null || registerRequest.getPassword().isBlank()) {
+        return ResponseEntity.badRequest().body("A senha não pode estar em branco.");
     }
 
     // Criptografa a senha com BCrypt
