@@ -2,6 +2,7 @@
 FROM maven:3.9.6-eclipse-temurin-17 AS backend-build
 WORKDIR /app
 COPY pom.xml ./
+RUN mvn dependency:go-offline
 COPY src ./src/
 RUN mvn clean package -DskipTests
 
@@ -10,7 +11,7 @@ FROM node:20 AS frontend-build
 WORKDIR /frontend
 COPY frontend/package.json frontend/package-lock.json* ./
 RUN npm install
-COPY frontend/ ./
+COPY frontend/ ./ 
 RUN npm run build
 
 # Etapa 3: imagem final
