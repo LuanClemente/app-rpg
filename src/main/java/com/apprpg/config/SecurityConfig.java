@@ -4,6 +4,7 @@ import com.apprpg.security.JwtFilter; // Importa o filtro JWT
 import org.springframework.beans.factory.annotation.Autowired; // Importa Autowired
 import org.springframework.context.annotation.Bean; // Importa a anotação Bean
 import org.springframework.context.annotation.Configuration; // Importa a anotação Configuration
+import org.springframework.http.HttpMethod;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity; // Importa configuração de segurança
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -24,6 +25,9 @@ public class SecurityConfig { // Classe de configuração de segurança
         http.csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
+                // Permite requisições POST para login e registro
+                .requestMatchers(HttpMethod.POST, "/api/auth/login", "/api/auth/register").permitAll()
+                // Permite acesso público aos arquivos estáticos do frontend e ao Swagger
                 .requestMatchers(
                     "/",
                     "/index.html",
@@ -31,9 +35,8 @@ public class SecurityConfig { // Classe de configuração de segurança
                     "/*.js",
                     "/*.json",
                     "/*.ico",
-                    "/*.png",
-                    "/manifest.json",
-                    "/api/auth/**", "/ws/**", "/swagger-ui/**", "/v3/api-docs/**"
+                    "/*.png",                    "/manifest.json",
+                    "/ws/**", "/swagger-ui/**", "/v3/api-docs/**"
                 ).permitAll()
                 .anyRequest().authenticated());
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);

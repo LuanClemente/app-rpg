@@ -24,7 +24,7 @@ public class AuthController { // Classe controladora para autenticação
 
   // Endpoint para login
   @PostMapping("/login") // Mapeia requisições POST para /login
-  public ResponseEntity<?> login(@Valid @RequestBody User loginRequest) { // Recebe dados de login
+  public ResponseEntity<?> login(@RequestBody User loginRequest) { // Recebe dados de login
     // Verificação de segurança para evitar exceções com senhas nulas/vazias
     if (loginRequest.getUsername() == null || loginRequest.getPassword() == null || loginRequest.getPassword().isBlank()) {
         return ResponseEntity.badRequest().body("Usuário e senha não podem ser vazios.");
