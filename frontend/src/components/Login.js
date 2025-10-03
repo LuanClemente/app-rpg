@@ -1,6 +1,6 @@
 // Componente de Login para autenticação do usuário
 // Exibe formulário de login e chama a função onLogin ao autenticar com sucesso
-import React, { useState } from 'react';
+import React, { useState } from 'react'; // Importa React e useState
 
 function Login({ onLogin, onRegister }) {
   // Estados para armazenar usuário e senha digitados
@@ -14,21 +14,21 @@ function Login({ onLogin, onRegister }) {
     setError(''); // Limpa erro anterior
     try {
       // Faz requisição para o endpoint de login do backend
-      const response = await fetch('/api/auth/login', {
+      const response = await fetch('/api/auth/login', { // Usa URL relativa
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, password })
       });
       if (!response.ok) {
         // Tenta ler a mensagem de erro do backend
-        const errorData = await response.text();
-        throw new Error(errorData || 'Usuário ou senha inválidos');
+        const errorText = await response.text();
+        throw new Error(errorText || 'Usuário ou senha inválidos');
       }
       const data = await response.json();
-      if (!data.token || !data.username) {
+      if (!data.token || !data.username) { // Valida a resposta
         throw new Error('Resposta inválida do servidor');
       }
-      onLogin(data.token, data.username);
+      onLogin(data.token, data.username); // Passa token e username
     } catch (err) {
       setError(err.message);
     }
