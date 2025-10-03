@@ -17,7 +17,7 @@ function Register({ onRegister, onBack }) {
     setError('');
     setSuccess('');
     try {
-      const response = await fetch(`${process.env.REACT_APP_API_URL || process.env.API_URL || '/api'}/auth/register`, {
+      const response = await fetch('/api/auth/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ username, email, password, role })
