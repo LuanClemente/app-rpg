@@ -1,8 +1,8 @@
 # Etapa 1: build do backend (Spring Boot)
 FROM maven:3.9.6-eclipse-temurin-17 AS backend-build
 WORKDIR /app
-COPY pom.xml .
-COPY src ./src
+COPY pom.xml ./
+COPY src ./src/
 RUN mvn clean package -DskipTests
 
 # Etapa 2: build do frontend (React)
@@ -10,7 +10,7 @@ FROM node:20 AS frontend-build
 WORKDIR /frontend
 COPY frontend/package.json frontend/package-lock.json* ./
 RUN npm install
-COPY frontend/ .
+COPY frontend/ ./
 RUN npm run build
 
 # Etapa 3: imagem final
