@@ -20,11 +20,15 @@ function Login({ onLogin, onRegister }) {
         body: JSON.stringify({ username, password })
       });
       if (!response.ok) {
-        throw new Error('Usuário ou senha inválidos');
+        // Tenta ler a mensagem de erro do backend
+        const errorData = await response.text();
+        throw new Error(errorData || 'Usuário ou senha inválidos');
       }
       const data = await response.json();
-      // Chama função recebida por props passando o token e o usuário
-      onLogin(data.token, username);
+      if (!data.token || !data.username) {
+        throw new Error('Resposta inválida do servidor');
+      }
+      onLogin(data.token, data.username);
     } catch (err) {
       setError(err.message);
     }
