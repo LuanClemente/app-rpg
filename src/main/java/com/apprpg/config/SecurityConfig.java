@@ -24,7 +24,16 @@ public class SecurityConfig { // Classe de configuração de segurança
         http.csrf(AbstractHttpConfigurer::disable)
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
             .authorizeHttpRequests(auth -> auth
-                .requestMatchers("/api/auth/**", "/ws/**", "/swagger-ui/**", "/v3/api-docs/**").permitAll()
+                .requestMatchers(
+                    "/",
+                    "/index.html",
+                    "/static/**",
+                    "/*.js",
+                    "/*.json",
+                    "/*.ico",
+                    "/manifest.json",
+                    "/api/auth/**", "/ws/**", "/swagger-ui/**", "/v3/api-docs/**"
+                ).permitAll()
                 .anyRequest().authenticated());
         http.addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
