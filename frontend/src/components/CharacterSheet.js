@@ -10,7 +10,7 @@ function CharacterSheet({ token, username }) { // Recebe token JWT e nome de usu
   useEffect(() => {
     const fetchSheet = async () => {
       try {
-        const response = await fetch('http://localhost:8080/api/charactersheets', {
+        const response = await fetch('/api/charactersheets', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await response.json();
