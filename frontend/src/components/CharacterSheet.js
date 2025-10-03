@@ -14,9 +14,8 @@ function CharacterSheet({ token, username }) { // Recebe token JWT e nome de usu
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const data = await response.json();
-        // Busca a ficha do usuário logado
-        const userSheet = data.find(s => s.user && s.user.username === username);
-        setSheet(userSheet || null); // Define a ficha encontrada
+        // O backend já retorna a lista correta. Se não for MASTER, a lista terá apenas as fichas do jogador.
+        setSheet(data && data.length > 0 ? data[0] : null); // Define a primeira ficha da lista como a ficha do usuário.
       } catch (err) {
         setError('Erro ao buscar ficha'); // Exibe erro de conexão
       }
