@@ -43,8 +43,8 @@ public class CharacterSheetController { // Classe controladora para operações 
             if (user.getRole().equals("MASTER") || (sheet.getUser() != null && sheet.getUser().getId().equals(user.getId()))) {
                 return ResponseEntity.ok(sheet); // 200 OK com a ficha
             }
-            return ResponseEntity.status(403).build(); // 403 Forbidden (sem permissão)
-        }).orElse(ResponseEntity.notFound().build()); // 404 Not Found (não encontrada)
+            return ResponseEntity.<CharacterSheet>status(403).build(); // 403 Forbidden (sem permissão)
+        }).orElse(ResponseEntity.<CharacterSheet>notFound().build()); // 404 Not Found (não encontrada)
     }
 
     @PostMapping // Mapeia as requisições POST
@@ -67,8 +67,8 @@ public class CharacterSheetController { // Classe controladora para operações 
                 CharacterSheet updatedSheet = repository.save(sheetDetails);
                 return ResponseEntity.ok(updatedSheet); // 200 OK com a ficha atualizada
             }
-            return ResponseEntity.status(403).build(); // 403 Forbidden
-        }).orElse(ResponseEntity.notFound().build()); // 404 Not Found
+            return ResponseEntity.<CharacterSheet>status(403).build(); // 403 Forbidden
+        }).orElse(ResponseEntity.<CharacterSheet>notFound().build()); // 404 Not Found
     }
 
     @DeleteMapping("/{id}") // Mapeia as requisições DELETE com um ID específico
@@ -81,8 +81,8 @@ public class CharacterSheetController { // Classe controladora para operações 
                 repository.deleteById(id); // Deleta a ficha do banco de dados
                 return ResponseEntity.noContent().build(); // 204 No Content (sucesso, sem corpo)
             }
-            return ResponseEntity.status(403).build(); // 403 Forbidden
-        }).orElse(ResponseEntity.notFound().build()); // 404 Not Found
+            return ResponseEntity.<Void>status(403).build(); // 403 Forbidden
+        }).orElse(ResponseEntity.<Void>notFound().build()); // 404 Not Found
     }
 }
 // Fim da classe CharacterSheetController
