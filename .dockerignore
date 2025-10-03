@@ -3,4 +3,3 @@ target/
 .gitignore
 README.md
 node_modules/
-frontend/
